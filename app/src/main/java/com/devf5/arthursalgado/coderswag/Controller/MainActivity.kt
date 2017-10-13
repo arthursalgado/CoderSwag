@@ -1,12 +1,13 @@
 package com.devf5.arthursalgado.coderswag.Controller
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import com.devf5.arthursalgado.coderswag.Adapters.CategoryAdapter
 import com.devf5.arthursalgado.coderswag.Adapters.CategoryRecycleAdapter
 import com.devf5.arthursalgado.coderswag.R
 import com.devf5.arthursalgado.coderswag.Services.DataService
+import com.devf5.arthursalgado.coderswag.Utilities.EXTRA_CATEGORY
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // ArrayAdapter(context, que tipo de view que será mostrado na ListView, qual dado que será mostrado)
-        adapter = CategoryRecycleAdapter(this, DataService.categories)
+        adapter = CategoryRecycleAdapter(this, DataService.categories) { category ->
+            val productIntent = Intent(this, ProductsActivity::class.java)
+            productIntent.putExtra(EXTRA_CATEGORY, category.title)
+            startActivity(productIntent)
+        }
         categoryListView.adapter = adapter
 
         val layoutManager = LinearLayoutManager(this)
